@@ -1,5 +1,5 @@
 import React from 'react';
-import {get} from 'lodash';
+import { get } from 'lodash';
 import {
   StyleSheet,
   View,
@@ -25,50 +25,70 @@ import temp from './assets/temperature.png';
 import humidity from './assets/humidity.png';
 // Main component
 export default class App extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
 
-    this.state ={
+    this.state = {
       currentTemprature: null,
       currentHumid: null,
       predictTemprature: null,
       predictHumid: null,
+      predictTemperatureBaseInput: null,
+      inputValue: null,
       isLoading: false
     }
 
     this.handleStartStop = this.handleStartStop.bind(this);
-    
+
   }
 
-  handleStartStop(){
-    setInterval(()=>console.log('Timer', 10), 6000);
+  handleStartStop() {
+    setInterval(() => console.log('Timer', 10), 6000);
   }
 
-   componentDidMount(){
-     this.serverRender();
-     this.handleStartStop();
+  componentDidMount() {
+    this.serverRender();
+    this.handleStartStop();
   }
 
-  serverRender = async ()=>{
-    this.setState({}, async ()=>{
-      const  resData = await getCurrentAndNextTemperater();
-        this.setState({
-          currentTemprature: get(resData, 'currentTemprature'),
-          predictTemprature: get(resData, 'predictTemprature'),
-          currentHumid: get(resData, 'currentHumid'),
-          predictHumid: get(resData, 'predictHumid')
-        })
+  serverRender = async () => {
+    this.setState({}, async () => {
+      const resData = await getCurrentAndNextTemperater();
+      this.setState({
+        currentTemprature: get(resData, 'currentTemprature'),
+        predictTemprature: get(resData, 'predictTemprature'),
+        currentHumid: get(resData, 'currentHumid'),
+        predictHumid: get(resData, 'predictHumid')
+      })
     })
   }
 
-  getCalNextTemperature =()=>{
-    this.setState({isLoading:true})
+  handleInput = (value) => {
+    let regrexCheck = value.match(/^\d+$/);
+    console.log('regrex check', regrexCheck);
+    regrexCheck ? this.setState({
+      inputValue: value
+    }) : this.setState({ inputValue: null });
+  }
+
+  getCalNextTemperature = () => {
+    if(!this.state.inputValue){
+      return;
+    }
+    this.setState({ isLoading: true })
+    this.setState({}, async ()=>{
+      const {next} = await getPredictTemprature(this.state.inputValue);
+      this.setState({
+        predictTemperatureBaseInput: next,
+        isLoading: false
+      });
+    })
   }
 
   render() {
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <StatusBar barStyle="light-content"/>
+        <StatusBar barStyle="light-content" />
         <ImageBackground
           style={styles.imageContainer}
           imageStyle={styles.image}
@@ -76,9 +96,9 @@ export default class App extends React.Component {
         >
           <View style={styles.detailsContainer}>
             <View style={{ position: "absolute", top: 110, right: 50 }}>
-            <Image source={humbg} style={{
+              <Image source={humbg} style={{
                 flex: 1,
-                resizeMode: 'cover', 
+                resizeMode: 'cover',
               }} />
               <Text style={styles.humidity}>
                 <Text style={{ fontSize: 12 }}>
@@ -98,7 +118,7 @@ export default class App extends React.Component {
                 </Text>
               </View>
             </View>
-            <View style={{ flex: 1, justifyContent:'center', alignItems:'center',flexDirection: 'row', position: 'absolute', left: '18%', bottom: '30%' }}>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', position: 'absolute', left: '18%', bottom: '30%' }}>
               <View style={{ flex: 1, flexDirection: 'column' }}>
                 <Text style={{ color: "#ffffff" }}>Current</Text>
                 <View style={{ width: 100, height: 50, borderColor: '#f1f1f1', borderWidth: 2, margin: 2 }}>
@@ -126,12 +146,13 @@ export default class App extends React.Component {
                 </View>
               </View>
             </View>
-            <View style={{flex:1, justifyContent:'center', alignItems:'center',position:'absolute', bottom:'10%', left:'20%'}}>
-              <TextInput onChange={(e)=>console.log('text change', e.nativeEvent.text)} style={{height: 40, borderWidth:2, borderColor:'#ffffff', marginVertical:10, paddingHorizontal:10, color:'#ffffff'}} placeholder="Type here any temperature you want..."/>
-              <TouchableOpacity onPress={()=> this.getCalNextTemperature()} style={{height:40, width:'50%', borderRadius:40, backgroundColor:'#841584',justifyContent:'center', alignItems:'center'}}>
-                {this.state.isLoading ? <ActivityIndicator animating={this.state.isLoading}/> : (<Text style={{ color:'#ffffff', fontWeight:'bold'}}>GET FUTURE</Text>)}
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', position: 'absolute', bottom: '10%', left: '20%' }}>
+              <TextInput onChange={(e) => this.handleInput(e.nativeEvent.text)} style={{ height: 40, borderWidth: 2, borderColor: '#ffffff', marginVertical: 10, paddingHorizontal: 10, color: '#ffffff' }} placeholder="Type here any temperature you want..." />
+              <TouchableOpacity onPress={() => this.getCalNextTemperature()} style={{ height: 40, width: '50%', borderRadius: 40, backgroundColor: '#841584', justifyContent: 'center', alignItems: 'center' }}>
+                {this.state.isLoading ? <ActivityIndicator animating={this.state.isLoading} /> : (<Text style={{ color: '#ffffff', fontWeight: 'bold' }}>GET FUTURE</Text>)}
               </TouchableOpacity>
             </View>
+            {this.state.predictTemperatureBaseInput && <Text style={{fontSize: 15,color:'#ffffff',marginBottom:1, position:'absolute', bottom:20, left:"30%", fontWeight:'bold'}}>The temperature next is: {this.state.predictTemperatureBaseInput} °C</Text>}
           </View>
         </ImageBackground>
       </KeyboardAvoidingView>
