@@ -118,7 +118,8 @@ export default class App extends React.Component {
                 </Text>
               </View>
             </View>
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', position: 'absolute', left: '18%', bottom: '30%' }}>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row',
+              position: 'absolute', left: '18%', bottom: '30%' }}>
               <View style={{ flex: 1, flexDirection: 'column' }}>
                 <Text style={{ color: "#ffffff" }}>Current</Text>
                 <View style={{ width: 100, height: 50, borderColor: '#f1f1f1', borderWidth: 2, margin: 2 }}>
