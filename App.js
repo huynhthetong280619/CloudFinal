@@ -43,15 +43,16 @@ export default class App extends React.Component {
   }
 
   handleStartStop() {
-    setInterval(() => console.log('Timer', 10), 6000);
+    setInterval(() => this.serverRender(), 6000);
   }
 
   componentDidMount() {
-    this.serverRender();
+    // this.serverRender();
     this.handleStartStop();
   }
 
   serverRender = async () => {
+    console.log('Timer 10');
     this.setState({}, async () => {
       const resData = await getCurrentAndNextTemperater();
       this.setState({
@@ -72,12 +73,12 @@ export default class App extends React.Component {
   }
 
   getCalNextTemperature = () => {
-    if(!this.state.inputValue){
+    if (!this.state.inputValue) {
       return;
     }
     this.setState({ isLoading: true })
-    this.setState({}, async ()=>{
-      const {next} = await getPredictTemprature(this.state.inputValue);
+    this.setState({}, async () => {
+      const { next } = await getPredictTemprature(this.state.inputValue);
       this.setState({
         predictTemperatureBaseInput: next,
         isLoading: false
@@ -147,12 +148,19 @@ export default class App extends React.Component {
               </View>
             </View>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', position: 'absolute', bottom: '10%', left: '20%' }}>
-              <TextInput onChange={(e) => this.handleInput(e.nativeEvent.text)} style={{ height: 40, borderWidth: 2, borderColor: '#ffffff', marginVertical: 10, paddingHorizontal: 10, color: '#ffffff' }} placeholder="Type here any temperature you want..." />
-              <TouchableOpacity onPress={() => this.getCalNextTemperature()} style={{ height: 40, width: '50%', borderRadius: 40, backgroundColor: '#841584', justifyContent: 'center', alignItems: 'center' }}>
-                {this.state.isLoading ? <ActivityIndicator animating={this.state.isLoading} /> : (<Text style={{ color: '#ffffff', fontWeight: 'bold' }}>GET FUTURE</Text>)}
+              <TextInput onChange={(e) => this.handleInput(e.nativeEvent.text)}
+                style={{ height: 40, borderWidth: 2, borderColor: '#ffffff', marginVertical: 10, paddingHorizontal: 10, color: '#ffffff' }} 
+                placeholder="Type here any temperature you want..." />
+              <TouchableOpacity onPress={() => this.getCalNextTemperature()} 
+              style={{ height: 40, width: '50%', borderRadius: 40, backgroundColor: '#841584', justifyContent: 'center', alignItems: 'center' }}>
+                {this.state.isLoading ? <ActivityIndicator animating={this.state.isLoading} /> :
+                (<Text style={{ color: '#ffffff', fontWeight: 'bold' }}>GET FUTURE</Text>)}
               </TouchableOpacity>
             </View>
-            {this.state.predictTemperatureBaseInput && <Text style={{fontSize: 15,color:'#ffffff',marginBottom:1, position:'absolute', bottom:20, left:"30%", fontWeight:'bold'}}>The temperature next is: {this.state.predictTemperatureBaseInput} °C</Text>}
+            {this.state.predictTemperatureBaseInput && 
+            <Text style={{ fontSize: 15, color: '#ffffff', marginBottom: 1, position: 'absolute', bottom: 20, left: "30%", fontWeight: 'bold' }}>
+              The temperature next is: {this.state.predictTemperatureBaseInput} °C
+            </Text>}
           </View>
         </ImageBackground>
       </KeyboardAvoidingView>
