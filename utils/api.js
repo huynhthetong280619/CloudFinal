@@ -21,5 +21,5 @@
    }
 
    export const getUpdateModelPredict = async () =>{
-      return null;
+      await fetch(`https://apiabcnhom7.herokuapp.com/`);    
    }

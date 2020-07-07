@@ -49,7 +49,7 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    // this.serverRender();
+    this.serverRender();
     this.handleLoopCycleUpdate();
   }
 
@@ -139,33 +139,33 @@ export default class App extends React.Component {
               position: 'absolute', left: '18%', bottom: '30%' }}>
               <View style={{ flex: 1, flexDirection: 'column' }}>
                 <Text style={{ color: "#ffffff" }}>Current</Text>
-                <View style={{ width: 100, height: 50, borderColor: '#f1f1f1', borderWidth: 2, margin: 2 }}>
+                <View style={{ width: 110, height: 50, borderColor: '#f1f1f1', borderWidth: 2, margin: 2 }}>
                   <Text style={{ color: '#ffffff', height: '100%', lineHeight: 33, paddingLeft:10 }}>
-                    <Image source={temp} style={{ borderWidth: 2 }} />    {this.state.currentTemprature} °C
+                    <Image source={temp} style={{ borderWidth: 2 }} />  {this.state.currentTemprature} °C
                   </Text>
                 </View>
-                <View style={{ width: 100, height: 50, borderColor: '#f1f1f1', borderWidth: 2, margin: 2 }}>
+                <View style={{ width: 110, height: 50, borderColor: '#f1f1f1', borderWidth: 2, margin: 2 }}>
                   <Text style={{ color: '#ffffff', height: '100%', lineHeight: 33, paddingLeft:10 }}>
-                    <Image source={humidity} style={{ borderWidth: 2 }} />    {this.state.currentHumid} %
+                    <Image source={humidity} style={{ borderWidth: 2 }} />  {this.state.currentHumid} %
                   </Text>
                 </View>
               </View>
               <View style={{ flex: 1, flexDirection: 'column' }}>
                 <Text style={{ color: "#ffffff" }}>Predictional</Text>
-                <View style={{ width: 100, height: 50, borderColor: '#f1f1f1', borderWidth: 2, margin: 2 }}>
+                <View style={{ width: 110, height: 50, borderColor: '#f1f1f1', borderWidth: 2, margin: 2 }}>
                   <Text style={{ color: '#ffffff', height: '100%', lineHeight: 33, paddingLeft:10 }}>
-                    <Image source={temp} style={{ borderWidth: 2 }} />    {this.state.predictTemprature} °C
+                    <Image source={temp} style={{ borderWidth: 2 }} />  {this.state.predictTemprature} °C
                   </Text>
                 </View>
-                <View style={{ width: 100, height: 50, borderColor: '#f1f1f1', borderWidth: 2, margin: 2 }}>
+                <View style={{ width: 110, height: 50, borderColor: '#f1f1f1', borderWidth: 2, margin: 2 }}>
                   <Text style={{ color: '#ffffff', height: '100%', lineHeight: 33, paddingLeft:10 }}>
-                    <Image source={maths} style={{ borderWidth: 2 }} />    {this.state.predictTemperatureBaseInput} °C
+                    <Image source={maths} style={{ borderWidth: 2 }} />  {this.state.predictTemperatureBaseInput} °C
                   </Text>
                 </View>
               </View>
             </View>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center',
-               position: 'absolute', bottom: '5%', left: '20%' }}>
+               position: 'absolute', bottom: '5%', left: '22%' }}>
               <TextInput onChange={(e) => this.handleInputTemperature(e.nativeEvent.text)}
                 style={{ height: 30, borderWidth: 2, borderColor: '#ffffff', marginVertical: 10,
                 paddingHorizontal: 10, color: '#ffffff' }}
@@ -183,7 +183,7 @@ export default class App extends React.Component {
             </View>
             {this.state.predictTemperatureBaseInput &&
               <Text style={{ fontSize: 15, color: '#ffffff', marginBottom: 1, position: 'absolute',
-                bottom: 10, left: "30%", fontWeight: 'bold' }}>
+                bottom: 5, left: "30%", fontWeight: 'bold' }}>
                 The temperature next is: {this.state.predictTemperatureBaseInput} °C
             </Text>}
           </View>
